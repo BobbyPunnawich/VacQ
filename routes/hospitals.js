@@ -1,4 +1,7 @@
 const express = require("express");
+
+const { protect, authorize } = require("../middleware/auth");
+
 const {
   getHospitals,
   getHospital,
@@ -8,11 +11,14 @@ const {
 } = require("../controllers/hospitals");
 const router = express.Router();
 
-router.route("/").get(getHospitals).post(createHospitals);
+router
+  .route("/")
+  .get(getHospitals)
+  .post(protect, authorize("admin"), createHospitals);
 router
   .route("/:id")
   .get(getHospital)
-  .put(updateHospital)
-  .delete(deleteHospital);
+  .put(protect, authorize("admin"), updateHospital)
+  .delete(protect, authorize("admin"), deleteHospital);
 
 module.exports = router;
