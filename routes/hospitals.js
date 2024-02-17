@@ -1,20 +1,18 @@
 const express = require("express");
-
-const { protect, authorize } = require("../middleware/auth");
-
 const {
   getHospitals,
   getHospital,
-  createHospitals,
+  createHospital,
   updateHospital,
   deleteHospital,
 } = require("../controllers/hospitals");
 const router = express.Router();
+const { protect, authorize } = require("../middleware/auth");
 
 router
   .route("/")
   .get(getHospitals)
-  .post(protect, authorize("admin"), createHospitals);
+  .post(protect, authorize("admin"), createHospital);
 router
   .route("/:id")
   .get(getHospital)

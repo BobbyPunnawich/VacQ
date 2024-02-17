@@ -3,27 +3,26 @@ const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
 
-//Load env vars
+// load dotenv vars
 dotenv.config({ path: "./config/config.env" });
 
-//Connect to database
+// Connect to database
 connectDB();
 
-const app = express();
-
-//Route files
+// route file
 const hospitals = require("./routes/hospitals");
 const auth = require("./routes/auth");
 
-//Body parser
+const app = express();
+// Body parser
 app.use(express.json());
 app.use("/api/v1/hospitals", hospitals);
 app.use("/api/v1/auth", auth);
-//Cookie parser
+
+// Cookie parser
 app.use(cookieParser());
 
-const PORT = process.env.PORT || 5003;
-
+const PORT = process.env.PORT || 5001;
 const server = app.listen(
   PORT,
   console.log(
@@ -34,9 +33,9 @@ const server = app.listen(
   )
 );
 
-//Handle unhandled promise rejections
+// Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {
   console.log(`Error: ${err.message}`);
-  //Close server & exit process
+  // Close server & exit process
   server.close(() => process.exit(1));
 });
